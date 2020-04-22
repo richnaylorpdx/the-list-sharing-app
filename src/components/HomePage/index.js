@@ -87,7 +87,7 @@ function HomePage(props) {
 					// to="/dashboard"
 					onClick={getToken}					
 					// className={classes.submit}>
-					className={console.log('classes: ', classes)}>
+					className={classes.submit}>
 					View Token
           		</Button>
 			</Paper>
