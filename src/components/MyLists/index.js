@@ -1,8 +1,7 @@
 import React from 'react'
-import { Typography, Paper, Avatar, Button, TextField, Input } from '@material-ui/core'
-import VerifiedUserOutlined from '@material-ui/icons/VerifiedUserOutlined'
-import withStyles from '@material-ui/core/styles/withStyles'
-import { Link } from 'react-router-dom'
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Paper, Button } from '@material-ui/core'
 import firebase from '../firebase'
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -10,18 +9,19 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import AppBar from '../AppBar';
 
-const styles = theme => ({
+const useStyles = makeStyles((theme) => ({
     main: {
         width: 'auto',
         display: 'block', // Fix IE 11 issue.
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
+        // [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+        //     width: 400,
+        //     marginLeft: 'auto',
+        //     marginRight: 'auto',
+        // },
     },
     paper: {
         marginTop: theme.spacing.unit * 8,
@@ -30,109 +30,114 @@ const styles = theme => ({
         alignItems: 'center',
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
     },
-    avatar: {
-        margin: theme.spacing.unit,
-        backgroundColor: theme.palette.secondary.main,
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
     },
-    submit: {
-        marginTop: theme.spacing.unit * 3,
+    margin: {
+        margin: theme.spacing(1),
     },
-})
+    withoutLabel: {
+        marginTop: theme.spacing(3),
+    },
+    textField: {
+        width: '100%',
+    },
+    iconContainer: {
+        // '&:hover $icon': {
+        //     color: 'blue',
+        // },
+        // margin: 0,
+        // padding: 0,
+    },
+    icon: {
+        // color: 'green',
+        // fontSize: '50px',
+        // margin: 0,
+        // padding: 0,
+    },
+}));
 
-const updateList = (item) => this.state.listItem.add({ name: item })
+export default function Lists() {
+    const classes = useStyles();
+    const [listName, setListName] = React.useState({name: 'test'})
+    const [listItem, setListItem] = React.useState({item: ''})
+    const [listArray, setListArray] = React.useState([
+        {
+            item: 'first entry',
+        },
+    ]);
 
-class MyLists extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentItem: {},
-            listItem: [
-                { name: 'rich' },
-                { name: 'cruz' }
-            ]
-        }
-        this.handleChange = this.handleChange.bind(this)
-        this.updateState = this.updateState.bind(this)
+    const handleChange = (prop) => (event) => {
+        setListItem({ ...listItem, [prop]: event.target.value });
+    };
 
-    }
+    const clearInput = (prop) => {
+        setListItem({ ...listItem, [prop]: '' });
+    };
 
-    handleChange(event) {
-        this.setState({ currentItem: {name: event.target.value} });
-        // console.log('handle change: ', event.target.value)
-    }
+    const updateListArray = () => {
+        setListArray(listArray.concat(listItem))
+        clearInput('item')
+    };
 
-    updateState() {
-        this.setState({ listItem: [...this.state.listItem, this.state.currentItem] })
-    }
-
-    render() {
-        return (
-            <main className={styles.main}>
-                <Paper className={styles.paper}>
-                    <Typography component="h1" variant="h4">
-                        {'My Lists'}
-                    </Typography>
-                    <Typography component="h1" variant="h5">
-                        {/* Hello Guest! */}
+    return (
+        <React.Fragment>
+            <AppBar color='transparent' />
+        <main className={classes.main}>
+            <Paper className={classes.paper}>
+                <Typography component='h1' variant='h4'>
+                    {'My Lists'}
+                </Typography>
+                <Typography component='h1' variant='h5'>
                         Hello {
-                            firebase.getCurrentUsername() ? firebase.getCurrentUsername() : 'Guest'
-                        }
-                    </Typography>
-                    <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                        firebase.getCurrentUsername() ? firebase.getCurrentUsername() : 'Guest'
+                    }
+                </Typography>
+                <FormControl className={clsx(classes.margin, classes.textField)} variant='outlined'>
+                    <InputLabel htmlFor='outlined-adornment-password'>
+                        {
+                            listName.name === 'test' ? 'Enter a list name' : 'Enter a'
+                        }   
+                    </InputLabel>
                     <OutlinedInput
-                        id="outlined-adornment-password"
-                        type={values.showPassword ? 'text' : 'password'}
-                        value={values.password}
-                        onChange={handleChange('password')}
+                        disableUnderline={false}
+                        notched={false}
+                        id="adornment-listItem"
+                        type={'text'}
+                        value={listItem.item}
+                        onChange={handleChange('item')}
+                        color={'primary'}
                         endAdornment={
-                            <InputAdornment position="end">
+                            <InputAdornment position='end'>
                                 <IconButton
-                                    // classes={{
-                                    //     root: classes.iconContainer
-                                    // }}
-                                    onClick={() => console.log('clicked it')}
+                                    classes={{
+                                        root: classes.iconContainer
+                                    }}
+                                    onClick={() => updateListArray()}
+                                    edge='end'
                                 >
-                                    <AddBoxIcon className={classes.icon} />
+                                    <AddBoxIcon 
+                                        className={classes.icon} 
+                                        variant='contained'
+                                        // color='secondary'    
+                                    />
                                 </IconButton>
                             </InputAdornment>
                         }
                         labelWidth={70}
                     />
                 </FormControl>
-                    <TextField
-                        id="outlined-basic"
-                        label="Outlined"
-                        variant="outlined"
-                        onChange={this.handleChange}
-                    />
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        // onClick={() => console.log('current state: ', this.state.currentItem)}
-                        onClick={() => this.updateState()}
-                    >
-                        Add item
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => console.log('list item state: ', this.state.listItem)}
-                    >
-                        Show State
-                    </Button>
-                    <ul>
-                        {
-                            this.state.listItem && this.state.listItem.map(item =>
-                                <li>{item.name}</li>
-                            )
-                        }
-                    </ul>
-                </Paper>
-            </main>
-        )
-    }
+                <ul>
+                    {
+                        listArray && listArray.map(item =>
+                            <li>{item.item}</li>
+                        )
+                    }
+                </ul>
+
+            </Paper>
+        </main>
+        </React.Fragment>
+    )
 }
-
-
-export default withStyles(styles)(MyLists)
