@@ -57,7 +57,7 @@ function HomePage(props) {
 					to="/register"
 					className={classes.submit}>
 					Register
-          		</Button>
+				</Button>
 				<Button
 					type="submit"
 					fullWidth
@@ -67,7 +67,7 @@ function HomePage(props) {
 					to="/login"
 					className={classes.submit}>
 					Login
-          		</Button>
+				</Button>
 				<Button
 					type="submit"
 					fullWidth
@@ -77,7 +77,7 @@ function HomePage(props) {
 					to="/dashboard"
 					className={classes.submit}>
 					Dashboard
-          		</Button>
+				</Button>
 				<Button
 					type="submit"
 					fullWidth
@@ -85,11 +85,20 @@ function HomePage(props) {
 					color="secondary"
 					// component={Link}
 					// to="/dashboard"
-					onClick={getToken}					
+					onClick={getToken}
 					// className={classes.submit}>
 					className={classes.submit}>
 					View Token
-          		</Button>
+				</Button>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={putDb}					
+					className={classes.submit}>
+					Write to db
+				</Button>
 			</Paper>
 		</main>
 	)
@@ -98,7 +107,15 @@ function HomePage(props) {
 		try {
 			await firebase.getToken()
 			// props.history.replace('/dashboard')
-		} catch(error) {
+		} catch (error) {
+			alert(error.message)
+		}
+	}
+
+	async function putDb() {
+		try {
+			await firebase.putDb()
+		} catch (error) {
 			alert(error.message)
 		}
 	}
