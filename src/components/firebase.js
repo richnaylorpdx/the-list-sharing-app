@@ -21,6 +21,21 @@ class Firebase {
 		this.db = app.firestore()
 	}
 
+	putDb() {
+		const db = app.firestore();
+		db.collection("cities").doc("LA").set({
+			name: "Los Angeles",
+			state: "CA",
+			country: "USA"
+		})
+		.then(function() {
+			console.log("Document successfully written!");
+		})
+		.catch(function(error) {
+			console.error("Error writing document: ", error);
+		});
+	}
+
 	getToken() {
 		const idToken = this.auth.currentUser.getIdToken(/* forceRefresh */ true)
 		console.log('this is getToken', idToken)
