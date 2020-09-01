@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Lists() {
+export default function MyLists() {
     const classes = useStyles();
     const [listName, setListName] = React.useState({name: 'test'})
     const [listItem, setListItem] = React.useState({item: ''})
