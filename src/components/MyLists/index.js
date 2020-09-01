@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Paper, Button } from '@material-ui/core'
 import firebase from '../firebase'
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -64,7 +63,7 @@ export default function Lists() {
     const [listItem, setListItem] = React.useState({item: ''})
     const [listArray, setListArray] = React.useState([
         {
-            item: 'first entry',
+            item: '',
         },
     ]);
 
@@ -95,11 +94,6 @@ export default function Lists() {
                     }
                 </Typography>
                 <FormControl className={clsx(classes.margin, classes.textField)} variant='outlined'>
-                    <InputLabel htmlFor='outlined-adornment-password'>
-                        {
-                            listName.name === 'test' ? 'Enter a list name' : 'Enter a'
-                        }   
-                    </InputLabel>
                     <OutlinedInput
                         disableUnderline={false}
                         notched={false}
@@ -107,6 +101,7 @@ export default function Lists() {
                         type={'text'}
                         value={listItem.item}
                         onChange={handleChange('item')}
+                        placeholder={listName.name === 'test' ? 'Enter a list name' : 'Enter a list item'}
                         color={'primary'}
                         endAdornment={
                             <InputAdornment position='end'>
