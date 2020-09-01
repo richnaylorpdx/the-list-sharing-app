@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Paper, Button } from '@material-ui/core'
@@ -59,16 +59,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MyLists() {
     const classes = useStyles();
-    const [listName, setListName] = React.useState({name: 'test'})
-    const [listItem, setListItem] = React.useState({item: ''})
-    const [listArray, setListArray] = React.useState([
-        {
-            item: '',
-        },
-    ]);
+    const [tmpListName, setTmpListName] = useState('')
+    const [listName, setListName] = useState('test')
+    const [listItem, setListItem] = useState({ item: '' })
+    const [listArray, setListArray] = useState([]);
 
     const handleChange = (prop) => (event) => {
-        setListItem({ ...listItem, [prop]: event.target.value });
+        (listName === 'test') ? (setTmpListName(event.target.value)) : (setListItem({ ...listItem, [prop]: event.target.value }));
     };
 
     const clearInput = (prop) => {
@@ -76,63 +73,64 @@ export default function MyLists() {
     };
 
     const updateListArray = () => {
-        setListArray(listArray.concat(listItem))
+        (listName === 'test') ? (setListName(tmpListName)) : setListArray(listArray.concat(listItem));
         clearInput('item')
     };
 
     return (
         <React.Fragment>
             <AppBar color='transparent' />
-        <main className={classes.main}>
-            <Paper className={classes.paper}>
-                <Typography component='h1' variant='h4'>
-                    {'My Lists'}
-                </Typography>
-                <Typography component='h1' variant='h5'>
+            <main className={classes.main}>
+                <Paper className={classes.paper}>
+                    <Typography component='h1' variant='h4'>
+                        {listName}
+                    </Typography>
+                    <Typography component='h1' variant='h5'>
                         Hello {
-                        firebase.getCurrentUsername() ? firebase.getCurrentUsername() : 'Guest'
-                    }
-                </Typography>
-                <FormControl className={clsx(classes.margin, classes.textField)} variant='outlined'>
-                    <OutlinedInput
-                        disableUnderline={false}
-                        notched={false}
-                        id="adornment-listItem"
-                        type={'text'}
-                        value={listItem.item}
-                        onChange={handleChange('item')}
-                        placeholder={listName.name === 'test' ? 'Enter a list name' : 'Enter a list item'}
-                        color={'primary'}
-                        endAdornment={
-                            <InputAdornment position='end'>
-                                <IconButton
-                                    classes={{
-                                        root: classes.iconContainer
-                                    }}
-                                    onClick={() => updateListArray()}
-                                    edge='end'
-                                >
-                                    <AddBoxIcon 
-                                        className={classes.icon} 
-                                        variant='contained'
-                                        // color='secondary'    
-                                    />
-                                </IconButton>
-                            </InputAdornment>
+                            firebase.getCurrentUsername() ? firebase.getCurrentUsername() : 'Guest'
                         }
-                        labelWidth={70}
-                    />
-                </FormControl>
-                <ul>
-                    {
-                        listArray && listArray.map(item =>
-                            <li>{item.item}</li>
-                        )
-                    }
-                </ul>
+                    </Typography>
+                    <FormControl className={clsx(classes.margin, classes.textField)} variant='outlined'>
+                        <OutlinedInput
+                            disableUnderline={false}
+                            notched={false}
+                            id="adornment-listItem"
+                            type={'text'}
+                            // value={listItem.item}
+                            onChange={handleChange('item')}
+                            placeholder={listName === 'test' ? 'Enter a list name' : 'Enter a list item'}
+                            color={'primary'}
+                            endAdornment={
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        classes={{
+                                            root: classes.iconContainer
+                                        }}
+                                        onClick={event => updateListArray(event.target.value)}
+                                        edge='end'
+                                    >
+                                        <AddBoxIcon
+                                            className={classes.icon}
+                                            variant='contained'
+                                        // color='secondary'    
+                                        />
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            labelWidth={70}
+                        />
+                    </FormControl>
+                    <ul>
+                        {
+                            listArray && listArray.map(item =>
+                                <li>{item.item}</li>
+                            )
+                        }
+                    </ul>
+                    <div>{listName}</div>
 
-            </Paper>
-        </main>
+                </Paper>
+            </main>
         </React.Fragment>
     )
 }
