@@ -77,6 +77,10 @@ export default function MyLists() {
         clearInput('item')
     };
 
+    const submitOnEnter = (event) => {
+        (event.charCode  === 13) && updateListArray()
+    }
+
     return (
         <React.Fragment>
             <AppBar color='transparent' />
@@ -97,6 +101,7 @@ export default function MyLists() {
                             id="adornment-listItem"
                             type={'text'}
                             // value={listItem.item}
+                            onKeyPress={event => submitOnEnter(event)}
                             onChange={handleChange('item')}
                             placeholder={listName === 'test' ? 'Enter a list name' : 'Enter a list item'}
                             color={'primary'}
@@ -106,7 +111,7 @@ export default function MyLists() {
                                         classes={{
                                             root: classes.iconContainer
                                         }}
-                                        onClick={event => updateListArray(event.target.value)}
+                                        onClick={() => updateListArray()}
                                         edge='end'
                                     >
                                         <AddBoxIcon
