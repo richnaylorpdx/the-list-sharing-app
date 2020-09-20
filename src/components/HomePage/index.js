@@ -35,6 +35,7 @@ const styles = theme => ({
 
 function HomePage(props) {
 	const { classes } = props
+	const user = firebase.getCurrentUserProfile;
 
 	return (
 		<main className={classes.main}>
@@ -99,9 +100,45 @@ function HomePage(props) {
 					className={classes.submit}>
 					Write to db
 				</Button>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={getCurrentUserProfile}					
+					className={classes.submit}>
+					Get User UUID
+				</Button>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={getDocument}					
+					className={classes.submit}>
+					Get Doc
+				</Button>
 			</Paper>
 		</main>
 	)
+
+	async function getDocument() {
+		try {
+			await firebase.getDocument()
+			// props.history.replace('/dashboard')
+		} catch (error) {
+			alert(error.message)
+		}
+	}
+
+	async function getCurrentUserProfile() {
+		try {
+			await firebase.getCurrentUserProfile()
+			// props.history.replace('/dashboard')
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 
 	async function getToken() {
 		try {
