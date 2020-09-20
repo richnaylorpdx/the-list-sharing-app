@@ -6,12 +6,12 @@ import * as admin from 'firebase-admin';
 
 const config = {
 	apiKey: "AIzaSyDZmrOMqbqEHk02ftMG0ocqs4XI8xU0JVE",
-    authDomain: "nodejsauthpj.firebaseapp.com",
-    databaseURL: "https://nodejsauthpj.firebaseio.com",
-    projectId: "nodejsauthpj",
-    storageBucket: "nodejsauthpj.appspot.com",
-    messagingSenderId: "238614253029",
-    appId: "1:238614253029:web:d1f9c61a8914d041fab30c"
+	authDomain: "nodejsauthpj.firebaseapp.com",
+	databaseURL: "https://nodejsauthpj.firebaseio.com",
+	projectId: "nodejsauthpj",
+	storageBucket: "nodejsauthpj.appspot.com",
+	messagingSenderId: "238614253029",
+	appId: "1:238614253029:web:d1f9c61a8914d041fab30c"
 }
 
 class Firebase {
@@ -28,11 +28,29 @@ class Firebase {
 			state: "CA",
 			country: "USA"
 		})
-		.then(function() {
-			console.log("Document successfully written!");
-		})
-		.catch(function(error) {
-			console.error("Error writing document: ", error);
+			.then(function () {
+				console.log("Document successfully written!");
+			})
+			.catch(function (error) {
+				console.error("Error writing document: ", error);
+			});
+	}
+
+	getDocument() {
+		const db = app.firestore();
+
+		const docRef = db.collection("cities").doc("LA");
+
+		docRef.get().then(function (doc) {
+			if (doc.exists) {
+				console.log("Document data:", doc.data());
+				// return doc.data();
+			} else {
+				// doc.data() will be undefined in this case
+				console.log("No such document!");
+			}
+		}).catch(function (error) {
+			console.log("Error getting document:", error);
 		});
 	}
 
@@ -77,19 +95,25 @@ class Firebase {
 	isInitialized() {
 		return new Promise(resolve => {
 			this.auth.onAuthStateChanged(resolve)
-					// 	this.auth.onAuthStateChanged((user) => {
-		// 		if (user) {
-		// 			// User is signed in.
-		// 			console.log('############ user is signed in', user)
-		// 			this.auth.onAuthStateChanged(resolve)
-		// 		  } else {
-		// 			// No user is signed in.
-		// 			console.log('############ user is not signed in')
-		// 		  }
-		// 	})
+			// 	this.auth.onAuthStateChanged((user) => {
+			// 		if (user) {
+			// 			// User is signed in.
+			// 			console.log('############ user is signed in', user)
+			// 			this.auth.onAuthStateChanged(resolve)
+			// 		  } else {
+			// 			// No user is signed in.
+			// 			console.log('############ user is not signed in')
+			// 		  }
+			// 	})
 
-		// })
+			// })
 		})
+	}
+
+	getCurrentUserProfile() {
+		const currentUser = this.auth.currentUser;
+		console.log('current user info: ', JSON.stringify(currentUser));
+		return currentUser;
 	}
 
 	getCurrentUsername() {
