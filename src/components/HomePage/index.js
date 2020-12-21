@@ -35,7 +35,6 @@ const styles = theme => ({
 
 function HomePage(props) {
 	const { classes } = props
-	const user = firebase.getCurrentUserProfile;
 
 	return (
 		<main className={classes.main}>
