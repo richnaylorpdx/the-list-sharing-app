@@ -111,7 +111,7 @@ export default function MyLists() {
                                         classes={{
                                             root: classes.iconContainer
                                         }}
-                                        onClick={() => updateListArray()}
+                                        onClick={() => updateListArray()}                                    
                                         edge='end'
                                     >
                                         <AddBoxIcon
@@ -133,9 +133,26 @@ export default function MyLists() {
                         }
                     </ul>
                     <div>{listName}</div>
-
                 </Paper>
             </main>
+            <Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={getDocument}					
+					className={classes.submit}>
+					Get Doc
+				</Button>
         </React.Fragment>
     )
+
+    async function getDocument() {
+		try {
+			await firebase.getDocument()
+			// props.history.replace('/dashboard')
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 }

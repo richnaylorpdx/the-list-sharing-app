@@ -16,11 +16,15 @@ const theme = createMuiTheme()
 export default function App() {
 
 	const [firebaseInitialized, setFirebaseInitialized] = useState(false)
+	const [userToken, setUserToken] = useState({})
 
 	useEffect(() => {
-		firebase.isInitialized().then(val => {
-			setFirebaseInitialized(val)
-		})
+		firebase.isInitialized()
+			.then(val => {
+				console.log('isInitialized: ', val)
+				setFirebaseInitialized(val)
+				setUserToken(val)
+			})
 	})
 
 
@@ -38,5 +42,6 @@ export default function App() {
 				</Switch>
 			</Router>
 		</MuiThemeProvider>
+
 	) : <div id="loader"><CircularProgress /></div>
 }

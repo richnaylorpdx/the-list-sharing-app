@@ -43,7 +43,6 @@ function HomePage(props) {
 					<VerifiedUserOutlined />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					{/* Hello Guest! */}
 					Hello {
 						firebase.getCurrentUsername() ? firebase.getCurrentUsername() : 'Guest'
 					}
@@ -67,6 +66,17 @@ function HomePage(props) {
 					to="/login"
 					className={classes.submit}>
 					Login
+				</Button>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={logout}
+					component={Link}
+					to="/"
+					className={classes.submit}>
+					Logout
 				</Button>
 				<Button
 					type="submit"
@@ -99,9 +109,53 @@ function HomePage(props) {
 					className={classes.submit}>
 					Write to db
 				</Button>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={getCurrentUserProfile}					
+					className={classes.submit}>
+					Get User UUID
+				</Button>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={getDocument}					
+					className={classes.submit}>
+					Get Doc
+				</Button>
 			</Paper>
 		</main>
 	)
+
+	async function logout() {
+		try {
+			await firebase.logout()
+		} catch (error) {
+			alert(error.message)
+		}
+	}
+
+	async function getDocument() {
+		try {
+			await firebase.getDocument()
+			// props.history.replace('/dashboard')
+		} catch (error) {
+			alert(error.message)
+		}
+	}
+
+	async function getCurrentUserProfile() {
+		try {
+			await firebase.getCurrentUserProfile()
+			// props.history.replace('/dashboard')
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 
 	async function getToken() {
 		try {
