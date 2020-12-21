@@ -44,7 +44,6 @@ function HomePage(props) {
 					<VerifiedUserOutlined />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					{/* Hello Guest! */}
 					Hello {
 						firebase.getCurrentUsername() ? firebase.getCurrentUsername() : 'Guest'
 					}
@@ -68,6 +67,17 @@ function HomePage(props) {
 					to="/login"
 					className={classes.submit}>
 					Login
+				</Button>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={logout}
+					component={Link}
+					to="/"
+					className={classes.submit}>
+					Logout
 				</Button>
 				<Button
 					type="submit"
@@ -121,6 +131,14 @@ function HomePage(props) {
 			</Paper>
 		</main>
 	)
+
+	async function logout() {
+		try {
+			await firebase.logout()
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 
 	async function getDocument() {
 		try {
